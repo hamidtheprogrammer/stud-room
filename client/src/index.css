@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .wrapper {
+    @apply max-w-[1440px] relative;
+  }
+  .flxColCenter {
+    @apply flex flex-col items-center;
+  }
+
+  .flxRowCenter {
+    @apply flex flex-row items-center;
+  }
+
+  .flxBtw {
+    @apply flex justify-between;
+  }
+
+  .flxColStart {
+    @apply flex flex-col items-start;
+  }
+
+  .yellowBg {
+    @apply bg-yellow-600;
+  }
+
+  .primaryBg {
+    @apply bg-[#3d81d1];
+  }
+
+  .details-text {
+    @apply text-sm text-black/60 font-[500];
+  }
+
+  .form-fields {
+    @apply flxColStart w-full;
+  }
+
+  .form-input {
+    @apply border-[1px] w-full;
+  }
+
+  .form-field-wrapper {
+    @apply px-5 w-full flxColStart gap-5 pt-5;
+  }
+
+  .form-error {
+    @apply details-text text-red-500;
+  }
+}
+
+* {
+  font-family: "Quicksand", sans-serif;
+}
+
+.quicksand {
+  font-family: "Quicksand", sans-serif;
+}
