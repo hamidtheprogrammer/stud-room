@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../UI/Button";
 import { Link } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
 import { GlobalContext, useContext } from "../../constants/imports.jsx";
 import Logout from "./Logout.jsx";
 
@@ -25,12 +24,13 @@ const Header = () => {
           <ul>
             <li className="flxRowStart items-center gap-1 cursor-pointer">
               <div>
-                <FaUser
-                  size={22}
+                <i
                   onClick={() => {
                     setAccountOpen((prev) => !prev);
                   }}
-                />
+                  className="fa-regular fa-user"
+                ></i>
+
                 <ul
                   className={`absolute bg-white -translate-x-1/2 p-2 shadow-xl rounded-lg transition duration-500 translate-y-3 ${
                     !accountOpen &&
