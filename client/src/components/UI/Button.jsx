@@ -5,7 +5,7 @@ const Button = ({ name, styles, disabled, type }) => {
     <button
       type={type}
       disabled={disabled}
-      className={`button-shadow  yellowBg ${styles} text-white px-5 py-2 rounded-md flxColCenter`}
+      className={`button-shadow  yellowBg ${styles} text-white px-5 py-2 rounded-md flxColCenter hover:opacity-70`}
     >
       {name}
     </button>

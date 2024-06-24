@@ -4,7 +4,11 @@ import {
   userValidationRules,
   validate,
 } from "../middlewares/validateCredentials.js";
-import { loginUser, register } from "../controllers/userControllers.js";
+import {
+  logOutUser,
+  loginUser,
+  register,
+} from "../controllers/userControllers.js";
 import { authenticateUser } from "../middlewares/auth.js";
 
 const router = express.Router();
@@ -15,5 +19,6 @@ router
   .route("/login")
   .post(userValidationRules({ login: true }), validate, loginUser);
 router.route("/auth").get(authenticateUser);
+router.route("/logout").post(logOutUser);
 
 export { router };

@@ -29,6 +29,43 @@ const userValidationRules = (login) => {
   ];
 };
 
+const isDateGreaterThanCurrent = (value) => {
+  const inputDate = new Date(value);
+  const currentDate = new Date();
+  return inputDate >= currentDate;
+};
+
+const roomValidationRules = () => {
+  return [
+    body("userId").notEmpty().withMessage("User required"),
+    body("title").notEmpty().withMessage("Title is required"),
+    body("description").notEmpty().withMessage("Description is required"),
+    body("rooms").isArray().withMessage("Room must be an array"),
+    body("rooms.*")
+      .isObject()
+      .withMessage("Each item in room must be an object")
+      .bail() // Stop validation chain if the above condition fails
+      .custom((value, { req }) => {
+        if (!value.hasOwnProperty("type") || !value.hasOwnProperty("price")) {
+          throw new Error("Each room item must have type and price properties");
+        }
+        return true;
+      }),
+    body("rooms.*.type").notEmpty().withMessage("Type is required"),
+    body("rooms.*.price")
+      .notEmpty()
+      .isNumeric()
+      .withMessage("Price is required and must be number"),
+    body("availableDate")
+      .notEmpty()
+      .isDate()
+      .withMessage("Date is required")
+      .custom(isDateGreaterThanCurrent)
+      .withMessage("Date cannot be less than the current date"),
+    body("amenities").isArray().withMessage("Must be array"),
+  ];
+};
+
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -37,4 +74,4 @@ const validate = (req, res, next) => {
   next();
 };
 
-export { userValidationRules, validate };
+export { userValidationRules, validate, roomValidationRules };

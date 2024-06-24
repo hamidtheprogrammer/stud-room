@@ -45,16 +45,27 @@ const loginUser = async (req, res) => {
     if (user) {
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (passwordMatch) {
+        generateToken(user._id, res);
         res.status(200).json({ userId: user._id, username: user.firstName });
       } else {
-        res.status(401).send("Invalid password");
+        res.status(401).json({ password: "Invalid password" });
       }
     } else {
-      res.status(401).send("user not found");
+      res.status(401).json({ email: "user not found" });
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-export { register, loginUser };
+const logOutUser = async (req, res) => {
+  res.cookie("jwt", "", {
+    maxAge: 0, // Immediately expire the cookie
+    httpOnly: true, // Ensure the cookie is not accessible via JavaScript
+    secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+    sameSite: "strict", // Prevent CSRF attacks
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+};
+
+export { register, loginUser, logOutUser };

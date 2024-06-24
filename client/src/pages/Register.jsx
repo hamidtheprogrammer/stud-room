@@ -5,11 +5,12 @@ import { z } from "zod";
 import { Button } from "../constants/imports";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { registerApi } from "../constants/imports";
+import { useNavigate } from "react-router";
 
 const schema = z
   .object({
-    firstName: z.string(),
-    lastName: z.string(),
+    firstName: z.string().min(1, { message: "Field is required" }),
+    lastName: z.string().min(1, { message: "Field is required" }),
     email: z.string().email(),
     password: z
       .string()
@@ -24,6 +25,7 @@ const schema = z
   });
 
 const Register = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const {
     register,
@@ -35,15 +37,23 @@ const Register = () => {
   const mutation = useMutation({
     mutationFn: registerApi,
     onSuccess: (data) => {
-      console.log("registration successful", data);
+      toast.success("registration successful");
+      navigate("/");
       queryClient.invalidateQueries(["registerApi"]);
     },
-    onError: (error) => {
+    onError: (error, data) => {
       console.log("Error:", {
         message: error.message,
         status: error.status,
         response: error.response,
       });
+      for (const [field, message] of Object.entries(error.response)) {
+        if (Object.keys(data).includes(field)) {
+          setError(field, { type: "manual", message });
+        } else {
+          console.warn("Field is not registered in the form");
+        }
+      }
     },
   });
   const onSubmit = async (data) => {

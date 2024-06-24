@@ -16,6 +16,10 @@
     @apply flex flex-row items-center;
   }
 
+  .flxRowStart {
+    @apply flex flex-row justify-start;
+  }
+
   .flxBtw {
     @apply flex justify-between;
   }
@@ -24,12 +28,16 @@
     @apply flex flex-col items-start;
   }
 
+  .nav-items {
+    @apply flxColCenter hover:bg-blue-900 h-full max-md:py-[0.5rem] md:py-3 font-[500] px-2 text-nowrap;
+  }
+
   .yellowBg {
     @apply bg-yellow-600;
   }
 
   .primaryBg {
-    @apply bg-[#3d81d1];
+    @apply bg-[#0a4c86ea];
   }
 
   .details-text {
@@ -37,7 +45,7 @@
   }
 
   .form-fields {
-    @apply flxColStart w-full;
+    @apply flxColStart w-full relative;
   }
 
   .form-input {
@@ -49,7 +57,11 @@
   }
 
   .form-error {
-    @apply details-text text-red-500;
+    @apply text-xs text-red-500 absolute top-[100%] font-bold leading-[0.7];
+  }
+
+  .post-label {
+    @apply details-text flex-1;
   }
 }
 
@@ -59,4 +71,15 @@
 
 .quicksand {
   font-family: "Quicksand", sans-serif;
+}
+
+.required-field::before {
+  content: "*";
+  color: red;
+  position: absolute;
+  left: 100%;
+}
+
+label {
+  position: relative;
 }

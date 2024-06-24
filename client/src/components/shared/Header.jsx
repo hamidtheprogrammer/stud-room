@@ -1,53 +1,86 @@
 import React, { useEffect, useState } from "react";
 import Button from "../UI/Button";
 import { Link } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
 import { GlobalContext, useContext } from "../../constants/imports.jsx";
+import Logout from "./Logout.jsx";
 
 const Header = () => {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
-  const { setLoginOpen } = useContext(GlobalContext);
+  const { setLoginOpen, currentUser } = useContext(GlobalContext);
+  const [accountOpen, setAccountOpen] = useState(false);
 
   useEffect(() => {
-    document.addEventListener("resize", () => {
+    window.addEventListener("resize", () => {
       setWindowSize(window.innerWidth);
     });
-    console.log(windowSize);
   }, []);
   return (
-    <header className="flxBtw max-md:py-3 max-md:px-3">
+    <header className="flxBtw md:py-6 max-md:py-[0.76rem] max-md:px-3 md:px-4 max-w-[1010px] mx-auto">
       <Link to={"/"}>
-        <div className="font-bold text-2xl">Studroom</div>
+        <div className="font-bold text-xl md:text-4xl">Studroom</div>
       </Link>
-      <div className="flxRowCenter gap-2">
-        {windowSize <= 730 ? (
-          <Link to={"/register"} className={"hover:underline text-blue-600"}>
-            Register
-          </Link>
-        ) : (
-          <Link to={"/register"}>
-            <Button name={"Register"} />
-          </Link>
-        )}
-        <div className="h-4/6 bg-black/60 w-[1px]"></div>
-        {windowSize <= 730 ? (
-          <Link
-            onClick={() => {
-              setLoginOpen(true);
-            }}
-            className={"hover:underline text-blue-600"}
-          >
-            Login
-          </Link>
-        ) : (
-          <Link
-            onClick={() => {
-              setLoginOpen(true);
-            }}
-          >
-            <Button name={"Login"} />
-          </Link>
-        )}
-      </div>
+      {currentUser.isAuthenticated ? (
+        <div className="relative flxRowStart items-center z-[99]">
+          <ul>
+            <li className="flxRowStart items-center gap-1 cursor-pointer">
+              <div>
+                <FaUser
+                  size={22}
+                  onClick={() => {
+                    setAccountOpen((prev) => !prev);
+                  }}
+                />
+                <ul
+                  className={`absolute bg-white -translate-x-1/2 p-2 shadow-xl rounded-lg transition duration-500 translate-y-3 ${
+                    !accountOpen &&
+                    "pointer-events-none opacity-0 translate-y-0"
+                  } `}
+                >
+                  <li className="hover:text-blue-600 cursor-pointer">
+                    Account
+                  </li>
+                  <Logout />
+                </ul>
+              </div>
+              <p className="max-md:hidden">Hi {currentUser.username}</p>
+            </li>
+            <li></li>
+          </ul>
+        </div>
+      ) : (
+        <div className="flxRowCenter gap-2">
+          {windowSize <= 768 ? (
+            <Link to={"/register"} className={"hover:underline text-blue-600"}>
+              Register
+            </Link>
+          ) : (
+            <Link to={"/register"}>
+              <Button name={"Register"} />
+            </Link>
+          )}
+
+          <div className="md:hidden h-4/6 bg-black/60 w-[1px]"></div>
+          {windowSize <= 768 ? (
+            <Link
+              onClick={() => {
+                setLoginOpen(true);
+              }}
+              className={"hover:underline text-blue-600"}
+            >
+              Login
+            </Link>
+          ) : (
+            <Link
+              onClick={() => {
+                setLoginOpen(true);
+              }}
+            >
+              <Button name={"Login"} />
+            </Link>
+          )}
+        </div>
+      )}
     </header>
   );
 };

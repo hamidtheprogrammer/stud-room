@@ -9,6 +9,15 @@ import Login from "../components/shared/Login";
 import { registerApi } from "../api/ApiCalls";
 import { useContext } from "react";
 import { GlobalContext } from "../contextApi/GlobalState";
+import Home from "../pages/Home";
+import PostAd from "../pages/PostAd";
+import ManageRoomForm from "../forms/manageRoomForms/ManageRoomForm";
+import RoomDetailsSection from "../forms/manageRoomForms/RoomDetailsSection";
+import RoomTypeprice from "../forms/manageRoomForms/Room-Type-price";
+import RoomTerm from "../forms/manageRoomForms/RoomTerm";
+import Extras from "../forms/manageRoomForms/Extras";
+import Images from "../forms/manageRoomForms/Images";
+import ImageUrl from "../forms/manageRoomForms/ImageUrl";
 
 export {
   Header,
@@ -22,4 +31,13 @@ export {
   registerApi,
   useContext,
   GlobalContext,
+  Home,
+  PostAd,
+  ManageRoomForm,
+  RoomDetailsSection,
+  RoomTypeprice,
+  RoomTerm,
+  Extras,
+  Images,
+  ImageUrl,
 };

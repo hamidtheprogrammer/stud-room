@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { object, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../UI/Button";
 import { GlobalContext, useContext } from "../../constants/imports.jsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { loginApi } from "../../api/ApiCalls.jsx";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const schema = z.object({
   email: z.string().email(),
@@ -15,7 +17,9 @@ const schema = z.object({
 });
 
 const Login = () => {
-  const { setLoginOpen } = useContext(GlobalContext);
+  const navigate = useNavigate();
+  const { setLoginOpen, setCurrentUser, currentUser } =
+    useContext(GlobalContext);
   const {
     register,
     handleSubmit,
@@ -27,20 +31,43 @@ const Login = () => {
   const mutation = useMutation({
     mutationFn: loginApi,
     onSuccess: (data) => {
-      console.log(data);
-      queryClient.invalidateCredentials["loginApi"];
+      toast.success("Login successful");
+      navigate("/");
+      setLoginOpen(false);
+      setCurrentUser({
+        isAuthenticated: true,
+        userId: data.userId,
+        username: data.username,
+      });
     },
-    onError: (error) => {
+    onError: (error, data) => {
       console.log("ERROR:", {
         message: error.message,
         status: error.status,
         response: error.response,
       });
+      for (const [field, message] of Object.entries(error.response)) {
+        if (Object.keys(data).includes(field)) {
+          setError(field, { type: "manual", message });
+        } else {
+          console.warn("Field is not registered in the form");
+        }
+      }
     },
   });
   const onSubmit = (data) => {
     mutation.mutate(data);
   };
+
+  const clearInputs = () => {
+    document.querySelectorAll(`input`).forEach((inp) => {
+      inp.value = "";
+    });
+  };
+
+  useEffect(() => {
+    console.log(currentUser);
+  }, [currentUser]);
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -52,6 +79,7 @@ const Login = () => {
         <p
           onClick={() => {
             setLoginOpen(false);
+            clearInputs;
           }}
           className="details-text hover:underline cursor-pointer"
         >
@@ -79,7 +107,6 @@ const Login = () => {
             <p className="form-error">{errors.password.message}</p>
           )}
         </div>
-
         <Button disabled={isSubmitting} type={"submit"} name={"Submit"} />
       </div>
     </form>

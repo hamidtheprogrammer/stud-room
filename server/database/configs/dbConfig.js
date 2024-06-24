@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { v2 as cloudinary } from "cloudinary";
 
 const connectDb = async () => {
   let isConnected = false;
@@ -19,4 +20,12 @@ const connectDb = async () => {
   }
 };
 
-export default connectDb;
+const connectCloudinary = () => {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+};
+
+export { connectCloudinary, connectDb };
