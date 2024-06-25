@@ -59,15 +59,6 @@ const Login = () => {
     mutation.mutate(data);
   };
 
-  const clearInputs = () => {
-    document.querySelectorAll(`input`).forEach((inp) => {
-      inp.value = "";
-    });
-  };
-
-  useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

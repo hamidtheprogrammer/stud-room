@@ -9,7 +9,7 @@ import {
   loginUser,
   register,
 } from "../controllers/userControllers.js";
-import { authenticateUser } from "../middlewares/auth.js";
+import { authenticateUser, verifyToken } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -18,7 +18,7 @@ router.route("/register").post(userValidationRules(), validate, register);
 router
   .route("/login")
   .post(userValidationRules({ login: true }), validate, loginUser);
-router.route("/auth").get(authenticateUser);
+router.route("/verify-token").get(verifyToken);
 router.route("/logout").post(logOutUser);
 
 export { router };

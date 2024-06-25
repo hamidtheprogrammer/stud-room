@@ -4,7 +4,11 @@ import {
   userValidationRules,
   validate,
 } from "../middlewares/validateCredentials.js";
-import { addRoom } from "../controllers/roomControllers.js";
+import {
+  addRoom,
+  getRoomById,
+  myRooms,
+} from "../controllers/roomControllers.js";
 import { authenticateUser } from "../middlewares/auth.js";
 import multer from "multer";
 
@@ -26,5 +30,7 @@ roomRouter
     authenticateUser,
     addRoom
   );
+roomRouter.route("/my-rooms").get(authenticateUser, myRooms);
+roomRouter.route("/my-rooms/:id").get(authenticateUser, getRoomById);
 
 export { roomRouter };

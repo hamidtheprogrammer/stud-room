@@ -19,7 +19,7 @@ const ImageUrl = () => {
     <div className="w-full flxRowStart details-text">
       <label className="flex-1">ImageUrl</label>
       {errors.imageUrl && <p>{errors.imageUrl.message}</p>}
-      <ul>
+      <ul className="flex-1">
         {fields.map((field, index) => (
           <li key={index}>
             <div>

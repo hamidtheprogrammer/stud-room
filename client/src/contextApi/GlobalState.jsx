@@ -26,7 +26,6 @@ const GlobalState = ({ children }) => {
         userId: data?.userId,
         username: data?.username,
       }));
-    console.log(data?.userId);
   }, [data]);
 
   useEffect(() => {

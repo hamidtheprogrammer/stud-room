@@ -21,8 +21,17 @@ const Header = () => {
       </Link>
       {currentUser.isAuthenticated ? (
         <div className="relative flxRowStart items-center z-[99]">
-          <ul>
-            <li className="flxRowStart items-center gap-1 cursor-pointer">
+          <ul className="flxRowStart items-center gap-5">
+            <li>
+              <Link
+                className="flxRowStart items-center gap-1 cursor-pointer"
+                to={"/my-rooms"}
+              >
+                <i className="fa-solid fa-house"></i>{" "}
+                <p className="max-md:hidden">My rooms</p>
+              </Link>
+            </li>
+            <li className="flxRowStart gap-1 cursor-pointer">
               <div>
                 <i
                   onClick={() => {

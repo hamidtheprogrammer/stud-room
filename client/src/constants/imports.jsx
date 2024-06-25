@@ -18,6 +18,8 @@ import RoomTerm from "../forms/manageRoomForms/RoomTerm";
 import Extras from "../forms/manageRoomForms/Extras";
 import Images from "../forms/manageRoomForms/Images";
 import ImageUrl from "../forms/manageRoomForms/ImageUrl";
+import MyRooms from "../pages/MyRooms";
+import MyRoomDetails from "../pages/MyRoomDetails";
 
 export {
   Header,
@@ -40,4 +42,6 @@ export {
   Extras,
   Images,
   ImageUrl,
+  MyRooms,
+  MyRoomDetails,
 };

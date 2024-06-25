@@ -36,5 +36,5 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
 app.use("/api/users", router);
 app.use("/api/rooms", roomRouter);
 app.listen(port, () => {
-  console.log("Server running on " + port);
+  console.log("Server running");
 });

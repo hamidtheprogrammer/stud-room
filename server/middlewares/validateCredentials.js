@@ -37,7 +37,6 @@ const isDateGreaterThanCurrent = (value) => {
 
 const roomValidationRules = () => {
   return [
-    body("userId").notEmpty().withMessage("User required"),
     body("title").notEmpty().withMessage("Title is required"),
     body("description").notEmpty().withMessage("Description is required"),
     body("rooms").isArray().withMessage("Room must be an array"),

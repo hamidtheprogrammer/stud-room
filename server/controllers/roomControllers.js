@@ -4,6 +4,7 @@ import { roomModel } from "../database/models/roomModel.js";
 const addRoom = async (req, res) => {
   const files = req.files;
   const room = req.body;
+
   room.userId = req.userId;
 
   // if (!files || files.length === 0) {
@@ -30,12 +31,48 @@ const addRoom = async (req, res) => {
     try {
       const newRoom = await roomModel(room);
       await newRoom.save();
-      res.status(200).json(newRoom);
+      console.log(newRoom);
+      res.status(200).json({ message: "Room posted" });
     } catch (error) {
       console.log(room);
+      console.log(error);
       res.status(401).json({ message: "something went wrong" });
     }
   }
 };
 
-export { addRoom };
+const myRooms = async (req, res) => {
+  try {
+    const rooms = await roomModel.find({ userId: req.userId });
+    if (rooms) {
+      res.status(200).json(rooms);
+    } else {
+      res.status(404).json({ message: "no rooms" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+const getRoomById = async (req, res) => {
+  const { id } = req.params;
+
+  if (id) {
+    try {
+      const room = await roomModel.findById(id);
+      if (room) {
+        res.status(200).json(room);
+      } else {
+        res.status(404).json({ message: "Room not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" });
+      console.log(error);
+    }
+  } else {
+    res.status(404).json({ message: "No id provided" });
+  }
+};
+
+export { addRoom, myRooms, getRoomById };

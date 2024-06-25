@@ -2,14 +2,17 @@ import React from "react";
 import { ManageRoomForm } from "../constants/imports";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addRoom } from "../api/ApiCalls";
+import { toast } from "react-toastify";
 const PostAd = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: addRoom,
     onSuccess: (data) => {
-      console.log(data);
+      toast.success(data.message);
+      window.location.reload();
     },
     onError: (error) => {
+      toast.error(error.message);
       console.log({
         error: error.message,
         status: error.status,

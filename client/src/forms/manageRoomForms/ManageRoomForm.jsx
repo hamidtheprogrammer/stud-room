@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useContext } from "react";
+import { GlobalContext } from "../../constants/imports.jsx";
 import * as z from "zod";
+import { toast } from "react-toastify";
 import {
   RoomDetailsSection,
   RoomTypeprice,
@@ -57,7 +60,7 @@ const globalSchema = z.object({
   //   .max(3, { message: "Max number of 3 Images allowed" }),
 });
 
-const ManageRoomForm = ({ isLoading, mutation }) => {
+const ManageRoomForm = ({ isLoading, mutation, specificRoom }) => {
   const formMethods = useForm(
     { resolver: zodResolver(globalSchema) },
     {
@@ -68,25 +71,39 @@ const ManageRoomForm = ({ isLoading, mutation }) => {
       },
     }
   );
-  const { handleSubmit, watch } = formMethods;
+
+  const { currentUser } = useContext(GlobalContext);
+  const { handleSubmit, watch, reset } = formMethods;
 
   const onSubmit = (data) => {
-    const formData = new FormData();
-    for (const key in data) {
-      if (data[key]) {
-        if (Array.isArray(data[key])) {
-          // If the value is an array, loop through each item
-          data[key].forEach((item, index) => {
-            formData.append(`${key}[${index}]`, item);
-          });
-        } else {
-          formData.append(key, data[key]);
-        }
-      }
-    }
+    console.log("hello");
     console.log(data);
-    // mutation.mutate(data);
+    // const formData = new FormData();
+    // for (const key in data) {
+    //   if (data[key]) {
+    //     if (Array.isArray(data[key])) {
+    //       // If the value is an array, loop through each item
+    //       data[key].forEach((item, index) => {
+    //         formData.append(`${key}[${index}]`, item);
+    //       });
+    //     } else {
+    //       formData.append(key, data[key]);
+    //     }
+    //   }
+    // }
+
+    if (!currentUser.isAuthenticated) {
+      return toast.error("Please login to continue", {
+        position: "top-center",
+      });
+    }
+
+    mutation.mutate(data);
   };
+
+  useEffect(() => {
+    // reset(specificRoom);
+  }, [specificRoom, reset]);
 
   return (
     <FormProvider {...formMethods}>
@@ -104,7 +121,7 @@ const ManageRoomForm = ({ isLoading, mutation }) => {
           <ImageUrl />
           <Button
             styles={"mt-6 disabled:opacity-50"}
-            disabled={isLoading}
+            // disabled={isLoading}
             type="submit"
             name={isLoading ? "submitting..." : "Submit"}
           />
